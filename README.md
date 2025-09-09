@@ -1,77 +1,37 @@
 # Routing Rules Service
 
-A backend service for managing routing rules and calculating member assignments based on contact information.
-
-## Features
-
-- Create and update routing rules configuration via REST API
-- Calculate routing assignments based on contact information and rule ID
-- MongoDB persistence with Docker Compose
-- Swagger UI for API documentation
-- Comprehensive validation using Bean Validation
-- Lombok for reduced boilerplate code
+API for managing routing rules and calculating member assignments based on contact information.
 
 ## Quick Start
 
-1. Start MongoDB with Docker Compose:
+1. **Start MongoDB:**
 ```bash
 docker-compose up -d
 ```
 
-2. Run the application:
+2. **Run Application:**
 ```bash
 ./mvnw spring-boot:run
 ```
 
-3. Access Swagger UI:
-```
-http://localhost:8080/swagger-ui.html
+3. **API Documentation:**
+[Swagger UI](http://localhost:8080/api/routing-rules/swagger-ui.html)
+
+## Docker
+
+```bash
+# Build
+./mvnw clean package
+docker build -t routing-rules .
+
+# Run
+docker run -p 8080:8080 routing-rules
 ```
 
 ## API Endpoints
 
-- `POST /api/routing-rules` - Create routing rules
-- `PUT /api/routing-rules/{id}` - Update routing rules
-- `GET /api/routing-rules/{id}` - Get routing rules by ID
-- `GET /api/routing-rules` - Get all routing rules
-- `DELETE /api/routing-rules/{id}` - Delete routing rules
-- `POST /api/routing-rules/calculate` - Calculate member assignment
-
-## Example Usage
-
-### Create Routing Rules
-```json
-{
-  "name": "Sales Team Rules",
-  "rules": [
-    {
-      "conditions": [
-        {
-          "field": "contactCountry",
-          "operator": "EQUALS",
-          "value": "US"
-        },
-        {
-          "field": "companyIndustry",
-          "operator": "EQUALS",
-          "value": "BANKING"
-        }
-      ],
-      "memberId": "eldad"
-    }
-  ],
-  "defaultMemberId": "stav"
-}
-```
-
-### Calculate Routing
-```json
-{
-  "ruleId": "rule-id-here",
-  "contact": {
-    "contactCountry": "US",
-    "companySize": 100,
-    "companyIndustry": "BANKING"
-  }
-}
-```
+- `POST /api/routing-rules/1.0/rules` - Create routing rules
+- `PUT /api/routing-rules/1.0/{id}` - Update routing rules
+- `GET /api/routing-rules/1.0/{id}` - Get routing rules by ID
+- `GET /api/routing-rules/1.0/` - Get all routing rules
+- `POST /api/routing-rules/1.0/calculate` - Calculate member assignment

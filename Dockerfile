@@ -2,14 +2,8 @@ FROM openjdk:21-jdk-slim
 
 WORKDIR /app
 
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-RUN ./mvnw dependency:go-offline
-
-COPY src ./src
-
-RUN ./mvnw clean package -DskipTests
+COPY target/routingrules-1.0.jar app.jar
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "target/routingrules-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
