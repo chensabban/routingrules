@@ -2,30 +2,30 @@
 
 API for managing routing rules and calculating member assignments based on contact information.
 
-## Quick Start
+## Quick Start (No Java Required)
 
-1. **Start MongoDB:**
+**Prerequisites:** Docker and Docker Compose
+
+1. **Start Everything:**
 ```bash
 docker-compose up -d
 ```
 
-2. **Run Application:**
+2. **Access Application:**
+- **API:** http://localhost:8080/api/routing-rules/1.0/
+- **Swagger UI:** http://localhost:8080/api/routing-rules/swagger-ui.html
+
+3. **Stop:**
 ```bash
-./mvnw spring-boot:run
+docker-compose down
 ```
 
-3. **API Documentation:**
-[Swagger UI](http://localhost:8080/api/routing-rules/swagger-ui.html)
-
-## Docker
+## Development Setup
 
 ```bash
-# Build
-./mvnw clean package
-docker build -t routing-rules .
-
-# Run
-docker run -p 8080:8080 routing-rules
+# Build and push to Docker Hub
+chmod +x build-and-push.sh
+./build-and-push.sh
 ```
 
 ## API Endpoints
