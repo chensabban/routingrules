@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 import java.util.Arrays;
 
 public class ValidContactFieldValidator implements ConstraintValidator<ValidContactField, String> {
-    
+
     private static final Set<String> VALID_FIELDS = Arrays.stream(Contact.class.getDeclaredFields())
             .map(Field::getName)
             .collect(Collectors.toSet());

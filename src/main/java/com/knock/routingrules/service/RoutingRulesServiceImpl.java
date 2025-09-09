@@ -2,7 +2,6 @@ package com.knock.routingrules.service;
 
 import com.knock.routingrules.dto.ContactDto;
 import com.knock.routingrules.dto.RoutingResponseDto;
-import com.knock.routingrules.dto.RoutingRulesDto;
 import com.knock.routingrules.exception.RoutingRulesNotFoundException;
 import com.knock.routingrules.mapper.RoutingRulesMapper;
 import com.knock.routingrules.model.*;
@@ -23,29 +22,18 @@ public class RoutingRulesServiceImpl implements RoutingRulesService {
     private final RoutingRulesMapper mapper;
 
     @Override
-    public RoutingRules createRoutingRules(final RoutingRulesDto dto) {
-        log.info("Trying to create new RoutingRules for RoutingRulesDto: {}", dto);
-        RoutingRules routingRules = mapper.toEntity(dto);
+    public RoutingRules save(RoutingRules routingRules) {
         return repository.save(routingRules);
     }
 
     @Override
-    public RoutingRules updateRoutingRules(String id, RoutingRulesDto dto) {
-        RoutingRules existing = getRoutingRulesById(id);
-        existing.setName(dto.getName());
-        existing.setRules(dto.getRules().stream().map(mapper::toEntity).toList());
-        existing.setDefaultMemberId(dto.getDefaultMemberId());
-        return repository.save(existing);
-    }
-
-    @Override
-    public RoutingRules getRoutingRulesById(String id) {
+    public RoutingRules findById(String id) {
         return repository.findById(id)
                 .orElseThrow(() -> new RoutingRulesNotFoundException("Routing rules not found with id: " + id));
     }
 
     @Override
-    public List<RoutingRules> getAllRoutingRules() {
+    public List<RoutingRules> findAll() {
         return repository.findAll();
     }
 
@@ -53,7 +41,7 @@ public class RoutingRulesServiceImpl implements RoutingRulesService {
 
     @Override
     public RoutingResponseDto calculateRouting(String ruleId, ContactDto contactDto) {
-        RoutingRules routingRules = getRoutingRulesById(ruleId);
+        RoutingRules routingRules = findById(ruleId);
         Contact contact = mapper.toEntity(contactDto);
         
         for (Rule rule : routingRules.getRules()) {
@@ -108,7 +96,8 @@ public class RoutingRulesServiceImpl implements RoutingRulesService {
         if (value1 instanceof Number n1 && value2 instanceof Number n2) {
             return Double.compare(n1.doubleValue(), n2.doubleValue());
         }
-        if (value1 instanceof LocalDateTime d1 && value2 instanceof LocalDateTime d2) {
+        if (value1 instanceof LocalDateTime d1) {
+            LocalDateTime d2 = value2 instanceof LocalDateTime ? (LocalDateTime) value2 : LocalDateTime.parse(value2.toString());
             return d1.compareTo(d2);
         }
         return 0;

@@ -1,46 +1,43 @@
 package com.knock.routingrules.controller;
 
+import com.knock.routingrules.dto.CreateRoutingRulesDto;
 import com.knock.routingrules.dto.RoutingRequestDto;
 import com.knock.routingrules.dto.RoutingResponseDto;
-import com.knock.routingrules.dto.RoutingRulesDto;
-import com.knock.routingrules.model.RoutingRules;
-import com.knock.routingrules.service.RoutingRulesService;
+import com.knock.routingrules.dto.response.RoutingRulesResponseDto;
+import com.knock.routingrules.facade.RoutingRulesFacade;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 public class RoutingRulesControllerImpl implements RoutingRulesController {
 
-    private final RoutingRulesService routingRulesService;
+    private final RoutingRulesFacade routingRulesFacade;
 
     @Override
-    public RoutingRules createRoutingRules(RoutingRulesDto routingRulesDto) {
-        return routingRulesService.createRoutingRules(routingRulesDto);
+    public RoutingRulesResponseDto createRoutingRules(CreateRoutingRulesDto createRoutingRulesDto) {
+        return routingRulesFacade.createRoutingRules(createRoutingRulesDto);
     }
 
     @Override
-    public RoutingRules updateRoutingRules(String id, RoutingRulesDto routingRulesDto) {
-        return routingRulesService.updateRoutingRules(id, routingRulesDto);
+    public RoutingRulesResponseDto updateRoutingRules(String id, CreateRoutingRulesDto createRoutingRulesDto) {
+        return routingRulesFacade.updateRoutingRules(id, createRoutingRulesDto);
     }
 
     @Override
-    public RoutingRules getRoutingRulesById(String id) {
-        return routingRulesService.getRoutingRulesById(id);
+    public RoutingRulesResponseDto getRoutingRulesById(String id) {
+        return routingRulesFacade.getRoutingRulesById(id);
     }
 
     @Override
-    public List<RoutingRules> getAllRoutingRules() {
-        return routingRulesService.getAllRoutingRules();
+    public List<RoutingRulesResponseDto> getAllRoutingRules() {
+        return routingRulesFacade.getAllRoutingRules();
     }
 
     @Override
     public RoutingResponseDto calculateRouting(RoutingRequestDto request) {
-        return routingRulesService.calculateRouting(request.getRuleId(), request.getContact());
+        return routingRulesFacade.calculateRouting(request.getRuleId(), request.getContact());
     }
 }

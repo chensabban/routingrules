@@ -1,9 +1,7 @@
 package com.knock.routingrules.config;
 
-import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.PathItem;
 import io.swagger.v3.oas.models.Paths;
-import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.servers.Server;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +17,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class SwaggerConfig {
 
-    // COMMENTED OUT: This GroupedOpenApi causes the /api-docs/1.0 path issue
-    // The grouped API creates versioned endpoints which conflicts with Swagger UI
-    /*
     private final String[] packagesToScan = {"com.knock.routingrules"};
 
     @Bean
@@ -58,17 +53,5 @@ public class SwaggerConfig {
             paths.put(entry.getKey().substring(endOfVersionIndex), entry.getValue());
         }
         return paths;
-    }
-    */
-
-    // SIMPLE OpenAPI configuration that works with standard /api-docs path
-    @Bean
-    public OpenAPI customOpenAPI() {
-        return new OpenAPI()
-                .info(new Info()
-                        .title("Routing Rules API")
-                        .version("1.0")
-                        .description("API for managing routing rules and calculating member assignments")
-                        .contact(new Contact().name("API Support")));
     }
 }
