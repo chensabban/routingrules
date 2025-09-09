@@ -28,10 +28,14 @@ chmod +x build-and-push.sh
 ./build-and-push.sh
 ```
 
+## Postman Collection
+
+Import `postman-collection.json` into Postman for ready-to-use API requests with examples.
+
 ## API Endpoints
 
 - `POST /api/routing-rules/1.0/rules` - Create routing rules
 - `PUT /api/routing-rules/1.0/{id}` - Update routing rules
 - `GET /api/routing-rules/1.0/{id}` - Get routing rules by ID
-- `GET /api/routing-rules/1.0/` - Get all routing rules
+- `GET /api/routing-rules/1.0` - Get all routing rules
 - `POST /api/routing-rules/1.0/calculate` - Calculate member assignment

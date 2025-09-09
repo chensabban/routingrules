@@ -1,0 +1,182 @@
+{
+	"info": {
+		"_postman_id": "routing-rules-api",
+		"name": "Routing Rules API",
+		"description": "API for managing routing rules and calculating member assignments",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080/api/routing-rules/1.0",
+			"type": "string"
+		},
+		{
+			"key": "ruleId",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Create Routing Rules",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 201\", () => {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"if (pm.response.code === 201) {",
+							"    const response = pm.response.json();",
+							"    pm.collectionVariables.set(\"ruleId\", response.id);",
+							"    console.log(\"Rule ID set:\", response.id);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"wix\",\n    \"rules\": [\n        {\n            \"conditions\": [\n                {\n                    \"field\": \"contactCountry\",\n                    \"operator\": \"EQUALS\",\n                    \"value\": \"IL\"\n                },\n                {\n                    \"field\": \"companySize\",\n                    \"operator\": \"EQUALS\",\n                    \"value\": 100\n                }\n            ],\n            \"memberId\": \"123\"\n        },\n        {\n            \"conditions\": [\n                {\n                    \"field\": \"companyIndustry\",\n                    \"operator\": \"EQUALS\",\n                    \"value\": \"AIRLINES_AVIATION\"\n                }\n            ],\n            \"memberId\": \"555\"\n        },\n        {\n            \"conditions\": [\n                {\n                    \"field\": \"firstSeen\",\n                    \"operator\": \"GREATER_THAN\",\n                    \"value\": \"2007-12-03T10:15:30\"\n                }\n            ],\n            \"memberId\": \"555\"\n        }\n    ],\n    \"defaultMemberId\": \"555\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/rules",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"rules"
+					]
+				}
+			}
+		},
+		{
+			"name": "Get Routing Rules by ID",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/{{ruleId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"{{ruleId}}"
+					]
+				}
+			}
+		},
+		{
+			"name": "Update Routing Rules",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Updated Rules\",\n    \"rules\": [\n        {\n            \"conditions\": [\n                {\n                    \"field\": \"contactCountry\",\n                    \"operator\": \"EQUALS\",\n                    \"value\": \"US\"\n                }\n            ],\n            \"memberId\": \"123\"\n        }\n    ],\n    \"defaultMemberId\": \"22\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/{{ruleId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"{{ruleId}}"
+					]
+				}
+			}
+		},
+		{
+			"name": "Get All Routing Rules",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}",
+					"host": [
+						"{{baseUrl}}"
+					]
+				}
+			}
+		},
+		{
+			"name": "Calculate Routing",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"ruleId\": \"{{ruleId}}\",\n  \"contact\": {\n    \"companySize\": 3,\n    \"companyHqCountry\": \"RL\",\n    \"companyIndustry\": \"ACCOUNTING\",\n    \"contactCountry\": \"US\",\n    \"firstSeen\": \"2008-12-03T10:15:30\"\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/calculate",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"calculate"
+					]
+				}
+			}
+		}
+	]
+}
